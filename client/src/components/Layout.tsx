@@ -1,3 +1,4 @@
+
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 
@@ -11,6 +12,7 @@ const nav = [
 
 export default function Layout() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,17 +29,18 @@ export default function Layout() {
   return (
     <>
       <header className={scrolled ? 'nav scrolled' : 'nav'}>
-        <Link className="brand" to="/">
+        <Link className="brand" to="/" onClick={() => setMenuOpen(false)}>
           <span>PALTU PAIRA</span>
           <small>FULL STACK & AI</small>
         </Link>
 
-        <nav>
+        <nav className={menuOpen ? 'mobile-open' : ''}>
           {nav.map(([name, path]) => (
             <NavLink
               key={path}
               to={path}
               className={({ isActive }) => (isActive ? 'active' : '')}
+              onClick={() => setMenuOpen(false)}
             >
               {name}
             </NavLink>
@@ -51,6 +54,17 @@ export default function Layout() {
         <Link className="dot" to="/contact" aria-label="Contact Paltu Paira">
           ✦
         </Link>
+
+        <button
+          className={`menu-toggle ${menuOpen ? 'open' : ''}`}
+          onClick={() => setMenuOpen(!menuOpen)}
+          aria-label={menuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+          aria-expanded={menuOpen}
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </header>
 
       <main>
